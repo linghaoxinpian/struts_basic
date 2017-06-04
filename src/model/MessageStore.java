@@ -10,4 +10,11 @@ public class MessageStore {
     public String getMessage() {
         return message;
     }
+    public void setMessage(String message){
+    	this.message=message;
+    }
+    //重写toString
+    public String toString() {
+        return message + " (from toString)";
+    }
 }

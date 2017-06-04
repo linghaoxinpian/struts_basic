@@ -6,14 +6,70 @@
 <struts>
 
 	<constant name="struts.devMode" value="true" />
-
+	<!-- 全局属性文件start -->
+	<constant name="struts.custom.i18n.resources" value="global" />
+	<!-- 全局属性文件end -->
 	<package name="basicstruts2" extends="struts-default">
+		<!-- 启用logging start-->
+		<interceptors>
+			<interceptor-stack name="appDefaultStack">
+	        	<interceptor-ref name="defaultStack">
+	            	<param name="exception.logEnabled">true</param>
+	           		<param name="exception.logLevel">ERROR</param>
+	            </interceptor-ref>
+    		</interceptor-stack>
+		</interceptors>
+				
+		<default-interceptor-ref name="appDefaultStack" />
+		<!-- 启用logging end-->
+		
+		<!-- 全局异常start -->
+		<global-results>
+			<result name="securityerror">/securityerror.jsp</result>
+			<result name="error">/error.jsp</result>
+		</global-results>
+
+		<global-exception-mappings>
+			<exception-mapping exception="org.apache.struts.register.exceptions.SecurityBreachException" result="securityerror" />
+			<exception-mapping exception="java.lang.Exception" result="error" />
+		</global-exception-mappings>
+		<!-- 全局异常end -->
+		
 		<action name="index">
 			<result>/index.jsp</result>
 		</action>
-		<!--添加如下-->
+		<!--hello -->
 		<action name="hello" class="action.HelloWorldAction" method="execute">
 			<result name="success">/HelloWorld.jsp</result>
+		</action>
+
+		<!-- register -->
+		<action name="register" class="action.RegisterAction" method="execute">
+			<result name="success">/thankyou.jsp</result>
+			<result name="input">/register.jsp</result>
+		</action>
+
+		<!-- registerInput -->
+		<action name="registerInput" class="action.RegisterAction" method="input">
+			<result name="input">/register.jsp</result>
+		</action>
+				
+		<!-- 指定Action类的异常start -->
+		<action name="actionspecificexception" class="action.RegisterAction" method="throwSecurityException">
+   			<exception-mapping exception="org.apache.struts.register.exceptions.SecurityBreachException" result="login" />
+   			<result>/register.jsp</result>
+   			<result name="login">/login.jsp</result>
+		</action>
+		<!-- 指定Action类的异常end -->
+		
+		<!-- edit -->
+		<action name="edit" class="action.EditAction">			
+			<result name="input">/edit.jsp</result>			
+		</action>
+		
+		<!-- editInput -->
+		<action name="editInput" class="action.EditAction" method="input">
+			<result name="input">/edit.jsp</result>
 		</action>
 	</package>
 
